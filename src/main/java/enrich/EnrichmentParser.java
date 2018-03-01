@@ -1,6 +1,7 @@
 package enrich;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,11 +16,11 @@ public class EnrichmentParser {
         return parser;
     }
 
-    public List<EnrichmentDefinition> parse(String s) throws Exception {
+    public List<EnrichmentDefinition> parse(String s) {
 
         if (!isValid(s)) {
             System.out.printf("Wrong format: %s\n", s);
-            throw new Exception("Wrong format");
+            return Collections.emptyList();
         }
 
         List<EnrichmentDefinition> enrichmentDefinitions = new ArrayList<>();
@@ -41,7 +42,7 @@ public class EnrichmentParser {
     }
 
     private boolean isValid(String s) {
-        String validPattern = "enrich\\s*([a-zA-Z0-9._]+\\s*=\\s*[a-zA-Z0-9._]+\\(\\s*[a-zA-Z0-9._]+\\s*\\)\\s*\\{\\s*([a-zA-Z0-9._]+,?\\s*)+\\},?\\s*)+";
+        String validPattern = "enrich\\s*([a-zA-Z0-9._]+\\s*=\\s*[a-zA-Z0-9._]+\\(\\s*[a-zA-Z0-9._]+\\s*\\)\\s*\\{\\s*([a-zA-Z0-9._]+,?\\s*)+\\},?\\s*)*";
         Pattern validatePattern = Pattern.compile(validPattern);
         Matcher validateMatcher = validatePattern.matcher(s);
         return validateMatcher.matches();
