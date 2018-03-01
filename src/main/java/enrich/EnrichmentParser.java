@@ -15,9 +15,14 @@ public class EnrichmentParser {
         return parser;
     }
 
-    public List<EnrichmentDefinition> parse(String s) {
+    public List<EnrichmentDefinition> parse(String s) throws Exception {
 
         List<EnrichmentDefinition> enrichmentDefinitions = new ArrayList<>();
+
+        if (!isValid(s)) {
+            System.out.printf("Wrong format: %s\n", s);
+            throw new Exception("Wrong format");
+        }
 
         String regex = "[a-zA-Z0-9._]+\\s*=\\s*[a-zA-Z0-9._]+\\(\\s*[a-zA-Z0-9._]+\\s*\\)\\s*\\{\\s*([a-zA-Z0-9._]+,?\\s*)+\\}";
         Pattern pattern = Pattern.compile(regex);
@@ -33,6 +38,13 @@ public class EnrichmentParser {
         }
 
         return enrichmentDefinitions;
+    }
+
+    private boolean isValid(String s) {
+        String validPattern = "enrich\\s*([a-zA-Z0-9._]+\\s*=\\s*[a-zA-Z0-9._]+\\(\\s*[a-zA-Z0-9._]+\\s*\\)\\s*\\{\\s*([a-zA-Z0-9._]+,?\\s*)+\\},?\\s*)+";
+        Pattern validatePattern = Pattern.compile(validPattern);
+        Matcher validateMatcher = validatePattern.matcher(s);
+        return validateMatcher.matches();
     }
 
     private List<String> parseAllFields(Matcher matcher) {
