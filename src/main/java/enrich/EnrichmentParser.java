@@ -17,12 +17,12 @@ public class EnrichmentParser {
 
     public List<EnrichmentDefinition> parse(String s) throws Exception {
 
-        List<EnrichmentDefinition> enrichmentDefinitions = new ArrayList<>();
-
         if (!isValid(s)) {
             System.out.printf("Wrong format: %s\n", s);
             throw new Exception("Wrong format");
         }
+
+        List<EnrichmentDefinition> enrichmentDefinitions = new ArrayList<>();
 
         String regex = "[a-zA-Z0-9._]+\\s*=\\s*[a-zA-Z0-9._]+\\(\\s*[a-zA-Z0-9._]+\\s*\\)\\s*\\{\\s*([a-zA-Z0-9._]+,?\\s*)+\\}";
         Pattern pattern = Pattern.compile(regex);
